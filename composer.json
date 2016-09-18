@@ -1,0 +1,22 @@
+{
+    "name": "klapuch/http",
+    "description": "http, request, response",
+    "type": "library",
+    "require-dev": {
+        "nette/tester": "^1.7"
+    },
+    "authors": [
+        {
+            "name": "Dominik Klapuch",
+            "email": "klapuchdominik@gmail.com"
+        }
+    ],
+    "require": {
+        "klapuch/uri": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Klapuch\\Http\\": "Core/"
+        }
+    }
+}
