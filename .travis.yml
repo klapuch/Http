@@ -12,8 +12,6 @@ matrix:
           env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=php-cgi
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libcurl3
   - composer self-update
 
 install:

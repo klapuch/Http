@@ -53,7 +53,7 @@ final class BasicRequest extends Tester\TestCase {
     }
 
     /**
-     * @throws \Exception Could not resolve host: 404.php.net
+     * @throws \Exception
      */
     public function testErrorDuringRequesting() {
         $url = 'http://404.php.net/';
