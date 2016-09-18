@@ -12,7 +12,7 @@ matrix:
           env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=php-cgi
 
 before_install:
-  - sudo apt-get --qq update
+  - sudo apt-get -qq update
   - sudo apt-get install -y php7.0-common
   - composer self-update
 
