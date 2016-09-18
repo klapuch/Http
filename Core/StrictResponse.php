@@ -3,9 +3,10 @@ declare(strict_types = 1);
 namespace Klapuch\Http;
 
 /**
- * Response which must accomplish one special strict header
+ * Response which must comply one special strict header
  */
 final class StrictResponse implements Response {
+    const DELIMITER = ';';
     private $header;
     private $origin;
 
@@ -15,10 +16,10 @@ final class StrictResponse implements Response {
     }
 
     public function body(): string {
-        if(strlen(trim($this->origin->body())) && !$this->violated())
+        if($this->complied())
             return $this->origin->body();
         throw new \Exception(
-            'The response does not accomplish the strict header'
+            'The response does not comply the strict header'
         );
     }
 
@@ -31,16 +32,27 @@ final class StrictResponse implements Response {
     }
 
     /**
-     * Is the strict header violated?
+     * Are the requirements complied?
      * @return bool
      */
-    private function violated(): bool {
+    private function complied(): bool {
+        return trim($this->origin->body())
+        && !$this->violated(key($this->header), current($this->header));
+    }
+
+    /**
+     * Is the strict header violated?
+     * @param string field
+     * @param string value
+     * @return bool
+     */
+    private function violated(string $field, string $value): bool {
         $headers = array_change_key_case($this->origin->headers(), CASE_LOWER);
-        $contentType = $headers[strtolower(key($this->header))] ?? '';
+        $contentType = $headers[strtolower($field)] ?? '';
         if(!empty($contentType)) {
-            if($contentType !== current($this->header)) {
-                foreach(explode(';', $contentType) as $value)
-                    if(strcasecmp($value, current($this->header)) === 0)
+            if($contentType !== $value) {
+                foreach(explode(self::DELIMITER, $contentType) as $part)
+                    if(strcasecmp($part, $value) === 0)
                         return false;
                 return true;
             }

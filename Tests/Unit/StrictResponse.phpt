@@ -60,7 +60,25 @@ final class StrictResponse extends Tester\TestCase {
                 $header,
                 new Http\FakeResponse('abc', $headers)
             ))->body();
-        }, \Exception::class, 'The response does not accomplish the strict header');
+        }, \Exception::class, 'The response does not comply the strict header');
+    }
+
+    public function testEmptyBodyWithWhiteCharacters() {
+        Assert::exception(function() {
+            (new Http\StrictResponse(
+                [],
+                new Http\FakeResponse('       ', [])
+            ))->body();
+        }, \Exception::class, 'The response does not comply the strict header');
+    }
+
+    public function testEmptyBody() {
+        Assert::exception(function() {
+            (new Http\StrictResponse(
+                [],
+                new Http\FakeResponse('', [])
+            ))->body();
+        }, \Exception::class, 'The response does not comply the strict header');
     }
 }
 
