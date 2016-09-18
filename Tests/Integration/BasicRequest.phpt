@@ -23,7 +23,7 @@ final class BasicRequest extends Tester\TestCase {
 
     public function testHttpResponseWithoutError() {
         Assert::noError(function() {
-            $url = 'http://localhost';
+            $url = 'http://www.example.com';
             $response = (new Http\BasicRequest(
                 'get',
                 new Uri\FakeUri($url)
