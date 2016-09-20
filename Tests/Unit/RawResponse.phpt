@@ -46,7 +46,7 @@ final class RawResponse extends Tester\TestCase {
     }
 
     /**
-     * @throws \Exception Allowed range for the status codes are 1xx - 5xx
+     * @throws \Exception Allowed range for the status codes is 1xx - 5xx
      */
     public function testUnknownStatusCode() {
         (new Http\RawResponse(['HTTP/1.0 999 Not Found'], 'abc'))->code();

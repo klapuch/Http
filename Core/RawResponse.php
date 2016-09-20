@@ -6,7 +6,7 @@ namespace Klapuch\Http;
  * Raw HTTP response
  */
 final class RawResponse implements Response {
-    const CODE_RANGE = [100, 599];
+    const CODES = [100, 599];
     const PROTOCOL = 0,
         CODE = 1;
     const EMPTY_HEADERS = [];
@@ -44,12 +44,12 @@ final class RawResponse implements Response {
 
     public function code(): int {
         $status = $this->status();
-        if(!$this->inRange($status[self::CODE], self::CODE_RANGE)) {
+        if(!$this->isCode($status[self::CODE])) {
             throw new \Exception(
                 sprintf(
-                    'Allowed range for the status codes are %sxx - %sxx',
-                    substr((string)self::CODE_RANGE[0], 0, 1),
-                    substr((string)self::CODE_RANGE[1], 0, 1)
+                    'Allowed range for the status codes is %sxx - %sxx',
+                    substr((string)self::CODES[0], 0, 1),
+                    substr((string)self::CODES[1], 0, 1)
                 )
             );
         }
@@ -57,11 +57,12 @@ final class RawResponse implements Response {
     }
 
     /**
-     * Is the given code in the allowed range?
+     * Does the given code belongs to valid status codes?
+     * @param int code
      * @return bool
      */
-    private function inRange(int $code, array $range): bool {
-       return in_array($code, range(...$range)); 
+    private function isCode(int $code): bool {
+       return in_array($code, range(...self::CODES)); 
     }
 
     /**
