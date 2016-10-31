@@ -12,7 +12,7 @@ final class FakeRequest implements Request {
         $this->response = $response;
     }
 
-    public function send(): Response {
+    public function send(string $body = ''): Response {
         return $this->response;
     }
 }

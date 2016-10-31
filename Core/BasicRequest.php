@@ -28,7 +28,7 @@ final class BasicRequest implements Request {
         $this->options = $options;
     }
 
-    public function send(): Response {
+    public function send(string $body = ''): Response {
         if(!$this->supported()) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -38,7 +38,7 @@ final class BasicRequest implements Request {
                 )
             );
         }
-        return new RawResponse(...$this->response());
+        return new RawResponse(...$this->response($body));
     }
 
     /**
@@ -59,10 +59,11 @@ final class BasicRequest implements Request {
 
     /**
      * Response given from the requested source
+	 * @param string $fields
      * @throws \Exception
      * @return array
      */
-    private function response(): array {
+    private function response(string $fields): array {
         $curl = curl_init();
         $defaultOptions = [
             CURLOPT_URL => $this->uri->reference(),
@@ -72,6 +73,7 @@ final class BasicRequest implements Request {
             CURLOPT_MAXREDIRS => 10,
 			CURLOPT_TIMEOUT => 30,
 			CURLOPT_CUSTOMREQUEST => $this->method,
+			CURLOPT_POSTFIELDS => $fields,
         ];
         curl_setopt_array($curl, $defaultOptions + $this->options); 
         $body = curl_exec($curl);

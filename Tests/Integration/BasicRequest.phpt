@@ -24,7 +24,7 @@ final class BasicRequest extends Tester\TestCase {
     public function testHttpResponseWithoutError() {
         Assert::noError(function() {
             $url = 'http://www.example.com';
-            $response = (new Http\BasicRequest(
+            (new Http\BasicRequest(
                 'get',
                 new Uri\FakeUri($url)
             ))->send();
@@ -34,7 +34,7 @@ final class BasicRequest extends Tester\TestCase {
     public function testHttpsResponseWithoutError() {
         Assert::noError(function() {
             $url = 'https://www.google.com';
-            $response = (new Http\BasicRequest(
+            (new Http\BasicRequest(
                 'get',
                 new Uri\FakeUri($url)
             ))->send();
@@ -44,11 +44,21 @@ final class BasicRequest extends Tester\TestCase {
     public function testPriorDefaultOptions() {
         Assert::noError(function() {
             $url = 'https://www.google.com';
-            $response = (new Http\BasicRequest(
+            (new Http\BasicRequest(
                 'GET',
                 new Uri\FakeUri($url),
                 [CURLOPT_URL => 'http://404.php.net/']
             ))->send();
+        });
+    }
+
+    public function testGetRequestWithFields() {
+        Assert::noError(function() {
+            $url = 'https://www.google.com';
+            (new Http\BasicRequest(
+                'GET',
+                new Uri\FakeUri($url)
+            ))->send('abc');
         });
     }
 
@@ -57,7 +67,7 @@ final class BasicRequest extends Tester\TestCase {
      */
     public function testErrorDuringRequesting() {
         $url = 'http://404.php.net/';
-        $response = (new Http\BasicRequest(
+        (new Http\BasicRequest(
             'get',
             new Uri\FakeUri($url)
         ))->send();
