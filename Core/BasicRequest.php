@@ -72,7 +72,7 @@ final class BasicRequest implements Request {
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_MAXREDIRS => 10,
 			CURLOPT_TIMEOUT => 30,
-			CURLOPT_CUSTOMREQUEST => $this->method,
+			CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
 			CURLOPT_POSTFIELDS => $fields,
 		];
 		curl_setopt_array($curl, $defaultOptions + $this->options);
