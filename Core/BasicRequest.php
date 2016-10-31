@@ -62,7 +62,7 @@ final class BasicRequest implements Request {
      * @throws \Exception
      * @return array
      */
-    private function response() {
+    private function response(): array {
         $curl = curl_init();
         $defaultOptions = [
             CURLOPT_URL => $this->uri->reference(),
