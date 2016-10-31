@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 final class BasicRequest extends Tester\TestCase {
     /**
-     * @throws \InvalidArgumentException Supported methods are GET - "foo" given
+     * @throws \InvalidArgumentException Supported methods are GET, POST - "foo" given
      */
     public function testUnknownMethodWithError() {
         (new Http\BasicRequest('foo', new Uri\FakeUri()))->send();

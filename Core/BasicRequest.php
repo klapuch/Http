@@ -10,7 +10,7 @@ use Klapuch\Uri;
 final class BasicRequest implements Request {
     const METHODS = [
         'GET',
-        // 'POST',
+        'POST',
     ];
     const HEADER = 0;
     const BODY = 1;
@@ -50,7 +50,7 @@ final class BasicRequest implements Request {
     }
 
     /**
-     * Human readable suported methods
+     * Human readable supported methods
      * @return string
      */
     private function readableMethods(): string {
@@ -70,6 +70,8 @@ final class BasicRequest implements Request {
             CURLOPT_AUTOREFERER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_CUSTOMREQUEST => $this->method,
         ];
         curl_setopt_array($curl, $defaultOptions + $this->options); 
         $body = curl_exec($curl);
