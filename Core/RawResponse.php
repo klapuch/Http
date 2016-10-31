@@ -58,7 +58,7 @@ final class RawResponse implements Response {
 
     /**
      * Does the given code belongs to valid status codes?
-     * @param int code
+     * @param int $code
      * @return bool
      */
     private function isCode(int $code): bool {

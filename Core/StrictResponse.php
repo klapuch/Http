@@ -42,8 +42,8 @@ final class StrictResponse implements Response {
 
     /**
      * Is the strict header violated?
-     * @param string field
-     * @param string value
+     * @param string $field
+     * @param string $value
      * @return bool
      */
     private function violated(string $field, string $value): bool {
