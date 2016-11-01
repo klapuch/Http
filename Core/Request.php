@@ -4,7 +4,7 @@ namespace Klapuch\Http;
 
 interface Request {
 	/**
-	 * Sent the request and receive response as a feedback
+	 * Send the request and receive response as a feedback
 	 * @throws \Exception
 	 * @param string $body
 	 * @return Response

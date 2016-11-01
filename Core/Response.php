@@ -4,14 +4,14 @@ namespace Klapuch\Http;
 
 interface Response {
 	/**
-	 * Body in the response
+	 * Body of the response
 	 * @throws \Exception
 	 * @return string
 	 */
 	public function body(): string;
 
 	/**
-	 * Headers in the response
+	 * Headers of the response
 	 * @return array
 	 */
 	public function headers(): array;
