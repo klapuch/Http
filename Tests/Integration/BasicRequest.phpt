@@ -64,8 +64,10 @@ final class BasicRequest extends Tester\TestCase {
 				$url = 'https://httpbin.org/get';
 				(new Http\BasicRequest(
 					'GET',
-					new Uri\FakeUri($url)
-				))->send('abc');
+					new Uri\FakeUri($url),
+					[],
+					'abc'
+				))->send();
 			}
 		);
 	}
@@ -92,8 +94,10 @@ final class BasicRequest extends Tester\TestCase {
 		$url = 'https://httpbin.org/post';
 		$response = (new Http\BasicRequest(
 			'POST',
-			new Uri\FakeUri($url)
-		))->send('name=Dominik');
+			new Uri\FakeUri($url),
+			[],
+			'name=Dominik'
+		))->send();
 		Assert::contains('"name": "Dominik"', $response->body());
 	}
 

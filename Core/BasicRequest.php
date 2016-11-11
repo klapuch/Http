@@ -17,18 +17,21 @@ final class BasicRequest implements Request {
 	private $method;
 	private $uri;
 	private $options;
+	private $body;
 
 	public function __construct(
 		string $method,
 		Uri\Uri $uri,
-		array $options = []
+		array $options = [],
+		string $body = ''
 	) {
 		$this->method = $method;
 		$this->uri = $uri;
 		$this->options = $options;
+		$this->body = $body;
 	}
 
-	public function send(string $body = ''): Response {
+	public function send(): Response {
 		if(!$this->supported()) {
 			throw new \InvalidArgumentException(
 				sprintf(
@@ -38,7 +41,7 @@ final class BasicRequest implements Request {
 				)
 			);
 		}
-		return new RawResponse(...$this->response($body));
+		return new RawResponse(...$this->response($this->body));
 	}
 
 	/**
