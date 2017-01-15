@@ -13,20 +13,14 @@ require __DIR__ . '/../bootstrap.php';
 
 final class RawResponse extends Tester\TestCase {
 	public function testBody() {
-		Assert::same(
-			'abc',
-			(new Http\RawResponse([], 'abc'))->body()
-		);
+		Assert::same('abc', (new Http\RawResponse([], 'abc'))->body());
 	}
 
 	public function testEmptyBodyWithoutError() {
-		Assert::same(
-			'',
-			(new Http\RawResponse([], ''))->body()
-		);
+		Assert::same('', (new Http\RawResponse([], ''))->body());
 	}
 
-	public function testStatusCodeFromHeaders() {
+	public function testGrabbingStatusCodeFromHeaders() {
 		Assert::same(
 			404,
 			(new Http\RawResponse(['HTTP/1.0 404 Not Found'], 'abc'))->code()
@@ -40,18 +34,18 @@ final class RawResponse extends Tester\TestCase {
 	/**
 	 * @throws \Exception Status code of the response is not known
 	 */
-	public function testLostStatusCodeWithError() {
+	public function testThrowingOnLostStatusCode() {
 		(new Http\RawResponse(['Content-Length: 666'], 'abc'))->code();
 	}
 
 	/**
 	 * @throws \Exception Allowed range for the status codes is 1xx - 5xx
 	 */
-	public function testUnknownStatusCode() {
+	public function testThrowingOnUnknownStatusCode() {
 		(new Http\RawResponse(['HTTP/1.0 999 Not Found'], 'abc'))->code();
 	}
 
-	public function testKeyValueHeaders() {
+	public function testTransformingToKeyValueHeaders() {
 		Assert::same(
 			['X-Powered-By' => 'PHP', 'Content-Type' => 'text/html', 'X' => '666'],
 			(new Http\RawResponse(
@@ -64,14 +58,14 @@ final class RawResponse extends Tester\TestCase {
 	/**
 	 * @throws \Exception Headers of the response are empty
 	 */
-	public function testEmptyHeadersWithError() {
+	public function testThrowingOnEmptyHeaders() {
 		(new Http\RawResponse([], 'abc'))->headers();
 	}
 
 	/**
 	 * @throws \Exception Headers of the response are empty
 	 */
-	public function testInvalidHeadersConsideredAsEmpty() {
+	public function testThrowingOnInvalidHeadersConsideredAsEmpty() {
 		(new Http\RawResponse(['this is not a header'], 'abc'))->headers();
 	}
 }

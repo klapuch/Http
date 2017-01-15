@@ -17,7 +17,7 @@ final class BasicRequest extends Tester\TestCase {
 	/**
 	 * @throws \InvalidArgumentException Supported methods are GET, POST - "foo" given
 	 */
-	public function testUnknownMethod() {
+	public function testThrowingOnUnknownMethod() {
 		(new Http\BasicRequest('foo', new Uri\FakeUri()))->send();
 	}
 
@@ -45,7 +45,7 @@ final class BasicRequest extends Tester\TestCase {
 		);
 	}
 
-	public function testPriorDefaultOptions() {
+	public function testPriorToDefaultOptions() {
 		Assert::noError(
 			function() {
 				$url = 'https://www.google.com';
