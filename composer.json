@@ -14,7 +14,7 @@
   "require": {
     "php": ">=7.0",
     "ext-curl": "*",
-    "klapuch/uri": "^1.0.0"
+    "klapuch/uri": "^2.0.0"
   },
   "require-dev": {
 	"nette/tester": "^1.7"
