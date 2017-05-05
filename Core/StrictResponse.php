@@ -6,7 +6,7 @@ namespace Klapuch\Http;
  * Response which must comply one special strict header
  */
 final class StrictResponse implements Response {
-	const DELIMITER = ';';
+	private const DELIMITER = ';';
 	private $header;
 	private $origin;
 
@@ -16,7 +16,7 @@ final class StrictResponse implements Response {
 	}
 
 	public function body(): string {
-		if($this->complied())
+		if ($this->complied())
 			return $this->origin->body();
 		throw new \Exception(
 			'The response does not comply the strict header'
@@ -49,10 +49,10 @@ final class StrictResponse implements Response {
 	private function violated(string $field, string $value): bool {
 		$headers = array_change_key_case($this->origin->headers(), CASE_LOWER);
 		$contentType = $headers[strtolower($field)] ?? '';
-		if(!empty($contentType)) {
-			if($contentType !== $value) {
-				foreach(explode(self::DELIMITER, $contentType) as $part)
-					if(strcasecmp($part, $value) === 0)
+		if (!empty($contentType)) {
+			if ($contentType !== $value) {
+				foreach (explode(self::DELIMITER, $contentType) as $part)
+					if (strcasecmp($part, $value) === 0)
 						return false;
 				return true;
 			}

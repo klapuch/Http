@@ -6,7 +6,7 @@ interface Request {
 	/**
 	 * Send the request and receive response as a feedback
 	 * @throws \Exception
-	 * @return Response
+	 * @return \Klapuch\Http\Response
 	 */
 	public function send(): Response;
 }

@@ -1,9 +1,10 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0.0
+ * @phpVersion > 7.1
  */
-namespace Klapuch\Http\Integration;
+namespace Klapuch\Http\Unit;
 
 use Klapuch\Http;
 use Tester;

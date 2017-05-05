@@ -13,7 +13,7 @@ final class AvailableResponse implements Response {
 	}
 
 	public function body(): string {
-		if($this->available())
+		if ($this->available())
 			return $this->origin->body();
 		throw new \Exception('The response is not available');
 	}

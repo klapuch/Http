@@ -6,10 +6,10 @@ namespace Klapuch\Http;
  * Raw HTTP response
  */
 final class RawResponse implements Response {
-	const CODES = [100, 599];
-	const PROTOCOL = 0,
+	private const CODES = [100, 599];
+	private const PROTOCOL = 0,
 		CODE = 1;
-	const EMPTY_HEADERS = [];
+	private const EMPTY_HEADERS = [];
 	private $headers;
 	private $body;
 
@@ -37,19 +37,19 @@ final class RawResponse implements Response {
 			},
 			self::EMPTY_HEADERS
 		);
-		if($headers)
+		if ($headers)
 			return $headers;
 		throw new \Exception('Headers of the response are empty');
 	}
 
 	public function code(): int {
 		$status = $this->status();
-		if(!$this->isCode($status[self::CODE])) {
+		if (!$this->isCode($status[self::CODE])) {
 			throw new \Exception(
 				sprintf(
 					'Allowed range for the status codes is %sxx - %sxx',
-					substr((string)self::CODES[0], 0, 1),
-					substr((string)self::CODES[1], 0, 1)
+					substr((string) self::CODES[0], 0, 1),
+					substr((string) self::CODES[1], 0, 1)
 				)
 			);
 		}
@@ -72,13 +72,13 @@ final class RawResponse implements Response {
 	 */
 	private function status(): array {
 		$status = explode(' ', current($this->headers));
-		if(count($status) < 3
+		if (count($status) < 3
 		|| strcasecmp(substr($status[self::PROTOCOL], 0, 4), 'http')) {
 			throw new \Exception(
 				'Status code of the response is not known'
 			);
 		}
-		$status[self::CODE] = (int)$status[self::CODE];
+		$status[self::CODE] = (int) $status[self::CODE];
 		return $status;
 	}
 }

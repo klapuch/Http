@@ -8,12 +8,12 @@ use Klapuch\Uri;
  * Basic HTTP request
  */
 final class BasicRequest implements Request {
-	const METHODS = [
+	private const METHODS = [
 		'GET',
 		'POST',
 	];
-	const HEADER = 0;
-	const BODY = 1;
+	private const HEADER = 0,
+		BODY = 1;
 	private $method;
 	private $uri;
 	private $options;
@@ -32,7 +32,7 @@ final class BasicRequest implements Request {
 	}
 
 	public function send(): Response {
-		if(!$this->supported()) {
+		if (!$this->supported()) {
 			throw new \InvalidArgumentException(
 				sprintf(
 					'Supported methods are %s - "%s" given',
@@ -80,7 +80,7 @@ final class BasicRequest implements Request {
 		];
 		curl_setopt_array($curl, $defaultOptions + $this->options);
 		$body = curl_exec($curl);
-		if($body === false)
+		if ($body === false)
 			throw new \Exception(curl_error($curl));
 		curl_close($curl);
 		return [

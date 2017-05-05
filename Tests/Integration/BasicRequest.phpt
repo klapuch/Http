@@ -1,13 +1,13 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0.0
+ * @phpVersion > 7.1
  */
 namespace Klapuch\Http\Integration;
 
-use Klapuch\{
-	Http, Uri
-};
+use Klapuch\Http;
+use Klapuch\Uri;
 use Tester;
 use Tester\Assert;
 
