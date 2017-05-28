@@ -31,7 +31,7 @@ final class RawResponse implements Response {
 				}
 			),
 			function(array $headers, string $header): array {
-				list($field, $value) = explode(':', $header, 2);
+				[$field, $value] = explode(':', $header, 2);
 				$headers[$field] = trim($value);
 				return $headers;
 			},
@@ -44,16 +44,15 @@ final class RawResponse implements Response {
 
 	public function code(): int {
 		$status = $this->status();
-		if (!$this->isCode($status[self::CODE])) {
-			throw new \Exception(
-				sprintf(
-					'Allowed range for the status codes is %sxx - %sxx',
-					substr((string) self::CODES[0], 0, 1),
-					substr((string) self::CODES[1], 0, 1)
-				)
-			);
-		}
-		return $status[self::CODE];
+		if ($this->isCode($status[self::CODE]))
+			return $status[self::CODE];
+		throw new \Exception(
+			sprintf(
+				'Allowed range for the status codes is %sxx - %sxx',
+				substr((string) self::CODES[0], 0, 1),
+				substr((string) self::CODES[1], 0, 1)
+			)
+		);
 	}
 
 	/**

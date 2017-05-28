@@ -36,7 +36,7 @@ final class StrictResponse implements Response {
 	 * @return bool
 	 */
 	private function complied(): bool {
-		list($field, $value) = [key($this->header), current($this->header)];
+		[$field, $value] = [key($this->header), current($this->header)];
 		return trim($this->origin->body()) && !$this->violated($field, $value);
 	}
 
