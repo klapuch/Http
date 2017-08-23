@@ -22,10 +22,12 @@ install:
     - IF %PHP%==1 del /Q *.zip
 
     - cd c:\projects\project
+    - appveyor DownloadFile https://curl.haxx.se/ca/cacert.pem
     - echo extension_dir=ext >> c:\php\php.ini
     - echo extension=php_openssl.dll >> c:\php\php.ini
     - echo extension=php_curl.dll >> c:\php\php.ini
     - echo extension=php_mbstring.dll >> c:\php\php.ini
+    - echo curl.cainfo=c:\projects\project\cacert.pem >> c:\php\php.ini
 
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - php composer.phar install --no-interaction --prefer-dist --no-scripts --no-progress --no-suggest --optimize-autoloader --classmap-authoritative
