@@ -33,14 +33,14 @@ final class RawResponse extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \Exception Status code of the response is not known
+	 * @throws \UnexpectedValueException Status code of the response is not known
 	 */
 	public function testThrowingOnLostStatusCode() {
 		(new Http\RawResponse(['Content-Length: 666'], 'abc'))->code();
 	}
 
 	/**
-	 * @throws \Exception Allowed range for the status codes is 1xx - 5xx
+	 * @throws \UnexpectedValueException Allowed range for the status codes is 1xx - 5xx
 	 */
 	public function testThrowingOnUnknownStatusCode() {
 		(new Http\RawResponse(['HTTP/1.0 999 Not Found'], 'abc'))->code();
@@ -57,14 +57,14 @@ final class RawResponse extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \Exception Headers of the response are empty
+	 * @throws \UnexpectedValueException Headers of the response are empty
 	 */
 	public function testThrowingOnEmptyHeaders() {
 		(new Http\RawResponse([], 'abc'))->headers();
 	}
 
 	/**
-	 * @throws \Exception Headers of the response are empty
+	 * @throws \UnexpectedValueException Headers of the response are empty
 	 */
 	public function testThrowingOnInvalidHeadersConsideredAsEmpty() {
 		(new Http\RawResponse(['this is not a header'], 'abc'))->headers();

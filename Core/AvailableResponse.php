@@ -13,9 +13,9 @@ final class AvailableResponse implements Response {
 	}
 
 	public function body(): string {
-		if ($this->available())
+		if ($this->available($this->code()))
 			return $this->origin->body();
-		throw new \Exception('The response is not available');
+		throw new \UnexpectedValueException('The response is not available');
 	}
 
 	public function headers(): array {
@@ -26,7 +26,7 @@ final class AvailableResponse implements Response {
 		return $this->origin->code();
 	}
 
-	private function available(): bool {
-		return $this->code() < 400;
+	private function available(int $code): bool {
+		return $code < 400;
 	}
 }

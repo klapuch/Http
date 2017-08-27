@@ -63,7 +63,7 @@ final class StrictResponse extends Tester\TestCase {
 					new Http\FakeResponse('abc', $headers)
 				))->body();
 			},
-			\Throwable::class,
+			\UnexpectedValueException::class,
 			'The response does not comply the strict header'
 		);
 	}
@@ -76,7 +76,7 @@ final class StrictResponse extends Tester\TestCase {
 					new Http\FakeResponse('       ', [])
 				))->body();
 			},
-			\Throwable::class,
+			\UnexpectedValueException::class,
 			'The response does not comply the strict header'
 		);
 	}
@@ -89,7 +89,7 @@ final class StrictResponse extends Tester\TestCase {
 					new Http\FakeResponse('', [])
 				))->body();
 			},
-			\Throwable::class,
+			\UnexpectedValueException::class,
 			'The response does not comply the strict header'
 		);
 	}

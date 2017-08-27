@@ -39,14 +39,14 @@ final class RawResponse implements Response {
 		);
 		if ($headers)
 			return $headers;
-		throw new \Exception('Headers of the response are empty');
+		throw new \UnexpectedValueException('Headers of the response are empty');
 	}
 
 	public function code(): int {
 		$status = $this->status();
 		if ($this->isCode($status[self::CODE]))
 			return $status[self::CODE];
-		throw new \Exception(
+		throw new \UnexpectedValueException(
 			sprintf(
 				'Allowed range for the status codes is %sxx - %sxx',
 				substr((string) self::CODES[0], 0, 1),
@@ -73,7 +73,7 @@ final class RawResponse implements Response {
 		$status = explode(' ', current($this->headers));
 		if (count($status) < 3
 		|| strcasecmp(substr($status[self::PROTOCOL], 0, 4), 'http')) {
-			throw new \Exception(
+			throw new \UnexpectedValueException(
 				'Status code of the response is not known'
 			);
 		}

@@ -102,7 +102,7 @@ final class BasicRequest extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws \UnexpectedValueException
 	 */
 	public function testErrorDuringRequesting() {
 		$url = 'http://404.php.net/';

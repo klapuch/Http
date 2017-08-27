@@ -23,7 +23,7 @@ final class AvailableResponse extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \Exception The response is not available
+	 * @throws \UnexpectedValueException The response is not available
 	 */
 	public function testThrowingOnNotAvailableResponse() {
 		(new Http\AvailableResponse(

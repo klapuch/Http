@@ -16,9 +16,9 @@ final class StrictResponse implements Response {
 	}
 
 	public function body(): string {
-		if ($this->complied())
+		if ($this->complied($this->header))
 			return $this->origin->body();
-		throw new \Exception(
+		throw new \UnexpectedValueException(
 			'The response does not comply the strict header'
 		);
 	}
@@ -33,10 +33,11 @@ final class StrictResponse implements Response {
 
 	/**
 	 * Are the requirements complied?
+	 * @param array $header
 	 * @return bool
 	 */
-	private function complied(): bool {
-		[$field, $value] = [key($this->header), current($this->header)];
+	private function complied(array $header): bool {
+		[$field, $value] = [key($header), current($header)];
 		return trim($this->origin->body()) && !$this->violated($field, $value);
 	}
 

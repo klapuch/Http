@@ -12,8 +12,6 @@ final class BasicRequest implements Request {
 		'GET',
 		'POST',
 	];
-	private const HEADER = 0,
-		BODY = 1;
 	private $method;
 	private $uri;
 	private $options;
@@ -32,11 +30,11 @@ final class BasicRequest implements Request {
 	}
 
 	public function send(): Response {
-		if (!$this->supported()) {
+		if (!$this->supported($this->method)) {
 			throw new \InvalidArgumentException(
 				sprintf(
 					'Supported methods are %s - "%s" given',
-					$this->readableMethods(),
+					implode(', ', self::METHODS),
 					$this->method
 				)
 			);
@@ -46,18 +44,11 @@ final class BasicRequest implements Request {
 
 	/**
 	 * Is the request supported?
+	 * @param string $method
 	 * @return bool
 	 */
-	private function supported(): bool {
-		return in_array(strtoupper($this->method), self::METHODS);
-	}
-
-	/**
-	 * Human readable supported methods
-	 * @return string
-	 */
-	private function readableMethods(): string {
-		return implode(', ', self::METHODS);
+	private function supported(string $method): bool {
+		return in_array(strtoupper($method), self::METHODS);
 	}
 
 	/**
@@ -68,24 +59,26 @@ final class BasicRequest implements Request {
 	 */
 	private function response(string $fields): array {
 		$curl = curl_init();
-		$defaultOptions = [
-			CURLOPT_URL => $this->uri->reference(),
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_AUTOREFERER => true,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
-			CURLOPT_POSTFIELDS => $fields,
-		];
-		curl_setopt_array($curl, $defaultOptions + $this->options);
-		$body = curl_exec($curl);
-		if ($body === false)
-			throw new \Exception(curl_error($curl));
-		curl_close($curl);
-		return [
-			self::HEADER => get_headers($this->uri->reference()),
-			self::BODY => $body,
-		];
+		try {
+			curl_setopt_array(
+				$curl,
+				[
+					CURLOPT_URL => $this->uri->reference(),
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_AUTOREFERER => true,
+					CURLOPT_FOLLOWLOCATION => true,
+					CURLOPT_MAXREDIRS => 10,
+					CURLOPT_TIMEOUT => 30,
+					CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
+					CURLOPT_POSTFIELDS => $fields,
+				] + $this->options
+			);
+			$body = curl_exec($curl);
+			if ($body === false)
+				throw new \UnexpectedValueException(curl_error($curl));
+			return [get_headers($this->uri->reference()), $body];
+		} finally {
+			curl_close($curl);
+		}
 	}
 }
