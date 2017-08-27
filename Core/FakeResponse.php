@@ -9,22 +9,30 @@ final class FakeResponse implements Response {
 	private $body;
 	private $headers;
 	private $code;
+	private $ex;
 
-	public function __construct($body = null, $headers = null, $code = null) {
+	public function __construct($body = null, $headers = null, $code = null, \Throwable $ex = null) {
 		$this->body = $body;
 		$this->headers = $headers;
 		$this->code = $code;
+		$this->ex = $ex;
 	}
 
 	public function body(): string {
-		return $this->body;
+		if ($this->ex === null)
+			return $this->body;
+		throw $this->ex;
 	}
 
 	public function headers(): array {
-		return $this->headers;
+		if ($this->ex === null)
+			return $this->headers;
+		throw $this->ex;
 	}
 
 	public function code(): int {
-		return $this->code;
+		if ($this->ex === null)
+			return $this->code;
+		throw $this->ex;
 	}
 }

@@ -7,12 +7,16 @@ namespace Klapuch\Http;
  */
 final class FakeRequest implements Request {
 	private $response;
+	private $ex;
 
-	public function __construct(Response $response = null) {
+	public function __construct(Response $response = null, \Throwable $ex = null) {
 		$this->response = $response;
+		$this->ex = $ex;
 	}
 
 	public function send(): Response {
-		return $this->response;
+		if ($this->ex === null)
+			return $this->response;
+		throw $this->ex;
 	}
 }
