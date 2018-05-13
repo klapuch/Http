@@ -8,10 +8,6 @@ use Klapuch\Uri;
  * Basic HTTP request
  */
 final class BasicRequest implements Request {
-	private const METHODS = [
-		'GET',
-		'POST',
-	];
 	private $method;
 	private $uri;
 	private $options;
@@ -30,25 +26,7 @@ final class BasicRequest implements Request {
 	}
 
 	public function send(): Response {
-		if (!$this->supported($this->method)) {
-			throw new \InvalidArgumentException(
-				sprintf(
-					'Supported methods are %s - "%s" given',
-					implode(', ', self::METHODS),
-					$this->method
-				)
-			);
-		}
 		return new RawResponse(...$this->response($this->body));
-	}
-
-	/**
-	 * Is the request supported?
-	 * @param string $method
-	 * @return bool
-	 */
-	private function supported(string $method): bool {
-		return in_array(strtoupper($method), self::METHODS);
 	}
 
 	/**

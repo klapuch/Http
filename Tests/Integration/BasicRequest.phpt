@@ -14,13 +14,6 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class BasicRequest extends Tester\TestCase {
-	/**
-	 * @throws \InvalidArgumentException Supported methods are GET, POST - "foo" given
-	 */
-	public function testThrowingOnUnknownMethod() {
-		(new Http\BasicRequest('foo', new Uri\FakeUri()))->send();
-	}
-
 	public function testHttpResponse() {
 		Assert::noError(
 			function() {
