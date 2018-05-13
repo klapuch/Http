@@ -54,6 +54,17 @@ final class BasicRequest implements Request {
 			$body = curl_exec($curl);
 			if ($body === false)
 				throw new \UnexpectedValueException(curl_error($curl));
+			stream_context_set_default(
+				[
+					'http' => [
+						'method' => $this->method,
+						'header' => implode(
+							"\r\n",
+							$this->options[CURLOPT_HTTPHEADER] ?? []
+						),
+					],
+				]
+			);
 			return [get_headers($this->uri->reference()), $body];
 		} finally {
 			curl_close($curl);
