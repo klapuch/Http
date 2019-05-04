@@ -71,7 +71,7 @@ final class BasicRequest extends Tester\TestCase {
 			'get',
 			new Uri\FakeUri($url)
 		))->send();
-		Assert::contains('"headers":{', $response->body());
+		Assert::contains('"headers": {', $response->body());
 	}
 
 	public function testCaseInsensitivePost() {
@@ -80,7 +80,7 @@ final class BasicRequest extends Tester\TestCase {
 			'post',
 			new Uri\FakeUri($url)
 		))->send();
-		Assert::contains('"data":""', $response->body());
+		Assert::contains('"data": ""', $response->body());
 	}
 
 	public function testPassedPostData() {
@@ -91,7 +91,7 @@ final class BasicRequest extends Tester\TestCase {
 			[],
 			'name=Dominik'
 		))->send();
-		Assert::contains('"name":"Dominik"', $response->body());
+		Assert::contains('"name": "Dominik"', $response->body());
 	}
 
 	/**

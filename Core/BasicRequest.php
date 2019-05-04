@@ -43,17 +43,13 @@ final class BasicRequest implements Request {
 				[
 					CURLOPT_URL => $this->uri->reference(),
 					CURLOPT_RETURNTRANSFER => true,
-					CURLOPT_AUTOREFERER => true,
-					CURLOPT_FOLLOWLOCATION => true,
-					CURLOPT_MAXREDIRS => 10,
-					CURLOPT_TIMEOUT => 30,
 					CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
 					CURLOPT_POSTFIELDS => $fields,
 				] + $this->options
 			);
 			$body = curl_exec($curl);
 			if ($body === false)
-				throw new \UnexpectedValueException(curl_error($curl));
+				throw new \UnexpectedValueException(curl_error($curl), curl_errno($curl));
 			stream_context_set_default(
 				[
 					'http' => [
