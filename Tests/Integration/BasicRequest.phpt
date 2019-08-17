@@ -36,6 +36,15 @@ final class BasicRequest extends Tester\TestCase {
 		Assert::same('text/html; charset=UTF-8', $headers['Content-Type']);
 	}
 
+	public function testReturnedCode() {
+		$url = new FakeUri('http://www.example.com');
+		$response = (new Http\BasicRequest(
+			'GET',
+			$url
+		))->send();
+		Assert::same(200, $response->code());
+	}
+
 	public function testHttpsResponse() {
 		Assert::noError(
 			function() {
