@@ -7,6 +7,7 @@ declare(strict_types = 1);
 namespace Klapuch\Http\Integration;
 
 use Klapuch\Http;
+use Klapuch\Uri\FakeUri;
 use Tester;
 use Tester\Assert;
 
@@ -16,7 +17,7 @@ final class BasicRequest extends Tester\TestCase {
 	public function testHttpResponse() {
 		Assert::noError(
 			function() {
-				$url = 'http://www.example.com';
+				$url = new FakeUri('http://www.example.com');
 				(new Http\BasicRequest(
 					'GET',
 					$url
@@ -26,7 +27,7 @@ final class BasicRequest extends Tester\TestCase {
 	}
 
 	public function testKeyValueHeaders() {
-		$url = 'http://www.example.com';
+		$url = new FakeUri('http://www.example.com');
 		$response = (new Http\BasicRequest(
 			'GET',
 			$url
@@ -38,7 +39,7 @@ final class BasicRequest extends Tester\TestCase {
 	public function testHttpsResponse() {
 		Assert::noError(
 			function() {
-				$url = 'https://www.google.com';
+				$url = new FakeUri('https://www.google.com');
 				(new Http\BasicRequest(
 					'GET',
 					$url
@@ -50,7 +51,7 @@ final class BasicRequest extends Tester\TestCase {
 	public function testPriorToDefaultOptions() {
 		Assert::noError(
 			function() {
-				$url = 'https://www.google.com';
+				$url = new FakeUri('https://www.google.com');
 				(new Http\BasicRequest(
 					'GET',
 					$url,
@@ -63,7 +64,7 @@ final class BasicRequest extends Tester\TestCase {
 	public function testGetRequestWithFields() {
 		Assert::noError(
 			function() {
-				$url = 'https://httpbin.org/get';
+				$url = new FakeUri('https://httpbin.org/get');
 				(new Http\BasicRequest(
 					'GET',
 					$url,
@@ -75,7 +76,7 @@ final class BasicRequest extends Tester\TestCase {
 	}
 
 	public function testCaseInsensitiveGet() {
-		$url = 'https://httpbin.org/get';
+		$url = new FakeUri('https://httpbin.org/get');
 		$response = (new Http\BasicRequest(
 			'get',
 			$url
@@ -84,7 +85,7 @@ final class BasicRequest extends Tester\TestCase {
 	}
 
 	public function testCaseInsensitivePost() {
-		$url = 'https://httpbin.org/post';
+		$url = new FakeUri('https://httpbin.org/post');
 		$response = (new Http\BasicRequest(
 			'post',
 			$url
@@ -93,7 +94,7 @@ final class BasicRequest extends Tester\TestCase {
 	}
 
 	public function testPassedPostData() {
-		$url = 'https://httpbin.org/post';
+		$url = new FakeUri('https://httpbin.org/post');
 		$response = (new Http\BasicRequest(
 			'POST',
 			$url,
@@ -107,7 +108,7 @@ final class BasicRequest extends Tester\TestCase {
 	 * @throws \UnexpectedValueException
 	 */
 	public function testErrorDuringRequesting() {
-		$url = 'http://404.php.net/';
+		$url = new FakeUri('http://404.php.net/');
 		(new Http\BasicRequest(
 			'GET',
 			$url

@@ -2,6 +2,8 @@
 declare(strict_types = 1);
 namespace Klapuch\Http;
 
+use Klapuch\Uri;
+
 /**
  * Basic HTTP request
  */
@@ -13,7 +15,7 @@ final class BasicRequest implements Request {
 
 	public function __construct(
 		string $method,
-		string $uri,
+		Uri\Uri $uri,
 		array $options = [],
 		string $body = ''
 	) {
@@ -39,7 +41,7 @@ final class BasicRequest implements Request {
 			curl_setopt_array(
 				$curl,
 				[
-					CURLOPT_URL => $this->uri,
+					CURLOPT_URL => $this->uri->reference(),
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
 					CURLOPT_POSTFIELDS => $fields,
