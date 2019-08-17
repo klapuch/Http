@@ -13,8 +13,7 @@
   ],
   "require": {
 	"php": ">=7.1",
-	"ext-curl": "*",
-	"klapuch/uri": "*"
+	"ext-curl": "*"
   },
   "require-dev": {
 	"nette/tester": "^2.0",

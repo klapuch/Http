@@ -7,7 +7,6 @@ declare(strict_types = 1);
 namespace Klapuch\Http\Integration;
 
 use Klapuch\Http;
-use Klapuch\Uri;
 use Tester;
 use Tester\Assert;
 
@@ -20,10 +19,20 @@ final class BasicRequest extends Tester\TestCase {
 				$url = 'http://www.example.com';
 				(new Http\BasicRequest(
 					'GET',
-					new Uri\FakeUri($url)
+					$url
 				))->send();
 			}
 		);
+	}
+
+	public function testKeyValueHeaders() {
+		$url = 'http://www.example.com';
+		$response = (new Http\BasicRequest(
+			'GET',
+			$url
+		))->send();
+		$headers = $response->headers();
+		Assert::same('text/html; charset=UTF-8', $headers['Content-Type']);
 	}
 
 	public function testHttpsResponse() {
@@ -32,7 +41,7 @@ final class BasicRequest extends Tester\TestCase {
 				$url = 'https://www.google.com';
 				(new Http\BasicRequest(
 					'GET',
-					new Uri\FakeUri($url)
+					$url
 				))->send();
 			}
 		);
@@ -44,7 +53,7 @@ final class BasicRequest extends Tester\TestCase {
 				$url = 'https://www.google.com';
 				(new Http\BasicRequest(
 					'GET',
-					new Uri\FakeUri($url),
+					$url,
 					[CURLOPT_URL => 'http://404.php.net/']
 				))->send();
 			}
@@ -57,7 +66,7 @@ final class BasicRequest extends Tester\TestCase {
 				$url = 'https://httpbin.org/get';
 				(new Http\BasicRequest(
 					'GET',
-					new Uri\FakeUri($url),
+					$url,
 					[],
 					'abc'
 				))->send();
@@ -69,7 +78,7 @@ final class BasicRequest extends Tester\TestCase {
 		$url = 'https://httpbin.org/get';
 		$response = (new Http\BasicRequest(
 			'get',
-			new Uri\FakeUri($url)
+			$url
 		))->send();
 		Assert::contains('"headers": {', $response->body());
 	}
@@ -78,7 +87,7 @@ final class BasicRequest extends Tester\TestCase {
 		$url = 'https://httpbin.org/post';
 		$response = (new Http\BasicRequest(
 			'post',
-			new Uri\FakeUri($url)
+			$url
 		))->send();
 		Assert::contains('"data": ""', $response->body());
 	}
@@ -87,7 +96,7 @@ final class BasicRequest extends Tester\TestCase {
 		$url = 'https://httpbin.org/post';
 		$response = (new Http\BasicRequest(
 			'POST',
-			new Uri\FakeUri($url),
+			$url,
 			[],
 			'name=Dominik'
 		))->send();
@@ -101,7 +110,7 @@ final class BasicRequest extends Tester\TestCase {
 		$url = 'http://404.php.net/';
 		(new Http\BasicRequest(
 			'GET',
-			new Uri\FakeUri($url)
+			$url
 		))->send();
 	}
 }

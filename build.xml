@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Library" default="check">
 
-	<target name="check" depends="lint, phpcpd, phpstan, phpcs, tests, cgi-tests"/>
+	<target name="check" depends="lint, phpcpd, phpstan, tests, cgi-tests"/>
 	<target name="ci" depends="check, coverage"/>
 
 	<target name="lint">

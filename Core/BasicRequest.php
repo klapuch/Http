@@ -2,8 +2,6 @@
 declare(strict_types = 1);
 namespace Klapuch\Http;
 
-use Klapuch\Uri;
-
 /**
  * Basic HTTP request
  */
@@ -15,7 +13,7 @@ final class BasicRequest implements Request {
 
 	public function __construct(
 		string $method,
-		Uri\Uri $uri,
+		string $uri,
 		array $options = [],
 		string $body = ''
 	) {
@@ -41,27 +39,21 @@ final class BasicRequest implements Request {
 			curl_setopt_array(
 				$curl,
 				[
-					CURLOPT_URL => $this->uri->reference(),
+					CURLOPT_URL => $this->uri,
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_CUSTOMREQUEST => strtoupper($this->method),
 					CURLOPT_POSTFIELDS => $fields,
 				] + $this->options
 			);
+			$responseHeaders = [];
+			curl_setopt($curl, CURLOPT_HEADERFUNCTION, static function ($curl, string $header) use (&$responseHeaders): int {
+				$responseHeaders[curl_getinfo($curl, CURLINFO_REDIRECT_COUNT)][] = $header;
+				return strlen($header);
+			});
 			$body = curl_exec($curl);
 			if ($body === false)
 				throw new \UnexpectedValueException(curl_error($curl), curl_errno($curl));
-			stream_context_set_default(
-				[
-					'http' => [
-						'method' => $this->method,
-						'header' => implode(
-							"\r\n",
-							$this->options[CURLOPT_HTTPHEADER] ?? []
-						),
-					],
-				]
-			);
-			return [get_headers($this->uri->reference()), $body];
+			return [end($responseHeaders) ?: [], $body];
 		} finally {
 			curl_close($curl);
 		}
